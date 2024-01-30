@@ -12,9 +12,9 @@ public class TicTacToe implements Runnable
     public TicTacToe()
     {
         //Class Initiation
-        _network = new Network();
         _graphics= new Graphics();
         _game= new Game();
+        _network = new Network(_game);
 
         ///summary
         ///Set ip&port via  Network

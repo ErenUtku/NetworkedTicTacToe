@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -11,8 +12,15 @@ public class Graphics
     private BufferedImage _blueX;
     private BufferedImage _redCircle;
     private BufferedImage _blueCircle;
-
     private Painter _painter;
+
+    //region board values
+
+    private final int _width = 506;
+    private final int _height = 527;
+    private int lenghtofSpace = 160;
+
+    //endregion
 
     public void loadImages()
     {
@@ -27,5 +35,22 @@ public class Graphics
         {
             e.printStackTrace();
         }
+    }
+
+    public void render(java.awt.Graphics g)
+    {
+        g.drawImage(_board,0,0,null);
+
+        if(Network.unabletoCommunitaceWithOpponents){
+            g.setColor(Color.RED);
+            g.setFont(Text.selectedFont(Text.FontType.Small));
+            java.awt.Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.UnableToCommunicate));
+            g.drawString(Text.LogType.UnableToCommunicate, _width/2 -stringWidth,_height/2);
+            return;
+        }
+
+        
     }
 }
