@@ -4,7 +4,7 @@ public class Game
     private boolean circle = true;
     private boolean won = false;
     private boolean enemyWon = false;
-    private String[] spaces = new String[9];
+    private static String[] spaces = new String[9];
     private int firstSpot = -1; //first winning square's coordinate
     private int secondSpot = -1; //last winning square's coordinate
 
@@ -28,10 +28,14 @@ public class Game
         yourTurn = value;
     }
 
-    public void setSpaceValue(int iValue, String sValue)
+    public static void setSpaceValue(int iValue, String sValue)
     {
         spaces[iValue] = sValue;
     }
 
+    public static String[] getSpace()
+    {
+        return spaces;
+    }
 
 }

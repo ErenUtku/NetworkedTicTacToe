@@ -7,9 +7,11 @@ import java.util.Scanner;
 
 public class Network
 {
-    public Network(Game game){
+    public Network(Game game)
+    {
         this._game = game;
     }
+
     private String _ip = "localHost";
     private int _port = 22222;
     private ServerSocket _serverSocket;
@@ -18,11 +20,11 @@ public class Network
     private DataInputStream _dis;
     public static boolean unabletoCommunitaceWithOpponents = false;
     private int errors = 0;
-    private boolean accepted = false;
+    private static boolean accepted = false;
 
     private Game _game;
 
-    public boolean isAccepted()
+    public static boolean isAccepted()
     {
         return accepted;
     }
@@ -38,19 +40,19 @@ public class Network
             {
                 int space = _dis.readInt();
 
-                if(_game.checkCircleState())
+                if (_game.checkCircleState())
                 {
-                    _game.setSpaceValue(space,"X");
-                }
-                else{
-                    _game.setSpaceValue(space,"O");
+                    _game.setSpaceValue(space, "X");
+                } else
+                {
+                    _game.setSpaceValue(space, "O");
                 }
 
                 _game.checkForEnemyWin();
                 _game.setYourTurn(true);
 
-            }
-            catch(IOException e){
+            } catch (IOException e)
+            {
                 e.printStackTrace();
                 errors++;
             }
