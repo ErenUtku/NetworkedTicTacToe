@@ -87,6 +87,35 @@ public class Graphics
                     }
                 }
             }
+            if (_game.checkForWin() || _game.checkForEnemyWin())
+            {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(10));
+                g2.setColor(Color.BLACK);
+
+                g.drawLine(Game.firstSpot % 3 * _lengthSpace + 10 * Game.firstSpot % 3 + _lengthSpace / 2, (Game.firstSpot / 3) * _lengthSpace + 10 * (Game.firstSpot / 3) + _lengthSpace / 2, Game.secondSpot % 3 * _lengthSpace + 10 * Game.secondSpot % 3 + _lengthSpace / 2, Game.secondSpot / 3 * _lengthSpace + 10 * (int) (Game.secondSpot / 3) + _lengthSpace / 2);
+
+                g.setColor(Color.RED);
+                g.setFont(Text.selectedFont(Text.FontType.Large));
+
+                if (_game.checkForWin())
+                {
+                    int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Won));
+                    g.drawString(Text.selectedLog(Text.LogType.Won), _width / 2 - stringWidth, _height / 2);
+                } else if (_game.checkForEnemyWin())
+                {
+                    int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Lost));
+                    g.drawString(Text.selectedLog(Text.LogType.Lost), _width / 2 - stringWidth, _height / 2);
+                }
+            }
+        } else
+        {
+            g.setColor(Color.RED);
+            g.setFont(Text.selectedFont(Text.FontType.Normal));
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            int stringWidth =  g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Waiting));
+            g.drawString(Text.selectedLog(Text.LogType.Waiting), _width / 2 - stringWidth, _height / 2);
         }
 
     }

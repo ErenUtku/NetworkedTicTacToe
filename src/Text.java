@@ -10,6 +10,8 @@ public class Text
     private static String _wonString = "You won!";
     private static String _opponentWonString = "Opponent won!";
 
+    private static String _tieString = "Its a tie!";
+
     public static Font selectedFont(FontType type)
     {
         switch (type)
@@ -45,6 +47,10 @@ public class Text
             {
                 return _opponentWonString;
             }
+            case Tie ->
+            {
+                return _tieString;
+            }
             default ->
             {
                 return "Log type is missing";
@@ -66,7 +72,8 @@ public class Text
         Waiting,
         UnableToCommunicate,
         Won,
-        Lost
+        Lost,
+        Tie
     }
 }
 
