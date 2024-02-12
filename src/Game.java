@@ -3,7 +3,10 @@ public class Game
     private boolean yourTurn = false;
     private boolean circle = true;
     private boolean won = false;
+    public boolean getWon(){ return won; }
     private boolean enemyWon = false;
+
+    public boolean getEnemyWon(){ return won; }
     private boolean tie = false;
     private static String[] spaces = new String[9];
     public static int firstSpot = -1; //first winning square's coordinate
@@ -89,6 +92,11 @@ public class Game
     public void setYourTurn(boolean value)
     {
         yourTurn = value;
+    }
+
+    public void setCircle(boolean value)
+    {
+        circle=value;
     }
 
     public static void setSpaceValue(int iValue, String sValue)

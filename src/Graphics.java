@@ -22,8 +22,15 @@ public class Graphics
     //region board values
 
     private final int _width = 506;
+    public int getWidth(){
+        return _width;
+    }
     private final int _height = 527;
+    public int getHeight(){
+        return _height;
+    }
     private final int _lengthSpace = 160;
+    public int getLengthSpace(){return _lengthSpace; }
 
     //endregion
 
@@ -48,7 +55,7 @@ public class Graphics
     {
         g.drawImage(_board, 0, 0, null);
 
-        if (Network.unabletoCommunitaceWithOpponents)
+        if (Network.unableToCommunityWithOpponents)
         {
             g.setColor(Color.RED);
             g.setFont(Text.selectedFont(Text.FontType.Small));
@@ -108,13 +115,22 @@ public class Graphics
                     g.drawString(Text.selectedLog(Text.LogType.Lost), _width / 2 - stringWidth, _height / 2);
                 }
             }
+
+            if (_game.checkForTie())
+            {
+                Graphics2D g2 = (Graphics2D) g;
+                g.setColor(Color.BLACK);
+                g.setFont(Text.selectedFont(Text.FontType.Large));
+                int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Tie));
+                g2.drawString(Text.selectedLog(Text.LogType.Tie),_width/2 - stringWidth /2, _height/2);
+            }
         } else
         {
             g.setColor(Color.RED);
             g.setFont(Text.selectedFont(Text.FontType.Normal));
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            int stringWidth =  g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Waiting));
+            int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Waiting));
             g.drawString(Text.selectedLog(Text.LogType.Waiting), _width / 2 - stringWidth, _height / 2);
         }
 

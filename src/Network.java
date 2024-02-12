@@ -1,6 +1,7 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
@@ -17,8 +18,10 @@ public class Network
     private ServerSocket _serverSocket;
     private Socket _socket;
     private DataOutputStream _dos;
+    public DataOutputStream getDos(){return _dos;}
     private DataInputStream _dis;
-    public static boolean unabletoCommunitaceWithOpponents = false;
+    public DataInputStream getDis(){return _dis;}
+    public static boolean unableToCommunityWithOpponents = false;
     private int errors = 0;
     private static boolean accepted = false;
 
@@ -29,12 +32,23 @@ public class Network
         return accepted;
     }
 
+    public void initializeServer(Game game) {
+        try {
+            _serverSocket = new ServerSocket(_port, 8, InetAddress.getByName(_ip));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        game.setYourTurn(true);
+        game.setCircle(false);
+    }
+
     public void tick()
     {
         //tick is 10
-        if (errors >= 10) unabletoCommunitaceWithOpponents = true;
+        if (errors >= 10) unableToCommunityWithOpponents = true;
 
-        if (!_game.checkTurnState() && unabletoCommunitaceWithOpponents)
+        if (!_game.checkTurnState() && unableToCommunityWithOpponents)
         {
             try
             {
@@ -48,6 +62,7 @@ public class Network
                     _game.setSpaceValue(space, "O");
                 }
 
+                _game.checkForTie();
                 _game.checkForEnemyWin();
                 _game.setYourTurn(true);
 
@@ -57,6 +72,10 @@ public class Network
                 errors++;
             }
         }
+    }
+
+    public void sentError(){
+        errors++;
     }
 
     public void setIPAndPort(Scanner scanner)
@@ -76,7 +95,7 @@ public class Network
 
     public void listenForServerRequest()
     {
-        Socket socket = null;
+        Socket socket;
         try
         {
             socket = _serverSocket.accept();
@@ -95,7 +114,7 @@ public class Network
     {
         try
         {
-            _socket = new Socket();
+            _socket = new Socket(_ip,_port);
             _dos = new DataOutputStream(_socket.getOutputStream());
             _dis = new DataInputStream(_socket.getInputStream());
             accepted = true;

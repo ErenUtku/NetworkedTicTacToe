@@ -9,8 +9,9 @@ public class Text
     private static String _unableToCommunicateWithOpponentString = "Unable to communicate with opponent";
     private static String _wonString = "You won!";
     private static String _opponentWonString = "Opponent won!";
-
     private static String _tieString = "Its a tie!";
+
+
 
     public static Font selectedFont(FontType type)
     {
