@@ -21,7 +21,7 @@ public class Network
     public DataOutputStream getDos(){return _dos;}
     private DataInputStream _dis;
     public DataInputStream getDis(){return _dis;}
-    public static boolean unableToCommunityWithOpponents = false;
+    public static boolean unableToCommunicateWithOpponents = false;
     private int errors = 0;
     private static boolean accepted = false;
 
@@ -46,9 +46,9 @@ public class Network
     public void tick()
     {
         //tick is 10
-        if (errors >= 10) unableToCommunityWithOpponents = true;
+        if (errors >= 10) unableToCommunicateWithOpponents = true;
 
-        if (!_game.checkTurnState() && unableToCommunityWithOpponents)
+        if (!_game.checkTurnState() && unableToCommunicateWithOpponents)
         {
             try
             {

@@ -55,7 +55,7 @@ public class Graphics
     {
         g.drawImage(_board, 0, 0, null);
 
-        if (Network.unableToCommunityWithOpponents)
+        if (Network.unableToCommunicateWithOpponents)
         {
             g.setColor(Color.RED);
             g.setFont(Text.selectedFont(Text.FontType.Small));

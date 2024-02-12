@@ -39,7 +39,7 @@ public class Painter extends JPanel implements MouseListener
     {
         if (Network.isAccepted())
         {
-            if (_game.checkTurnState() && !Network.unableToCommunityWithOpponents && !_game.getWon() && !_game.getEnemyWon())
+            if (_game.checkTurnState() && !Network.unableToCommunicateWithOpponents && !_game.getWon() && !_game.getEnemyWon())
             {
                 int x = e.getX() / _graphics.getLengthSpace();
                 int y = e.getY() / _graphics.getLengthSpace();
