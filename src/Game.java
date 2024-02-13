@@ -3,17 +3,25 @@ public class Game
     private boolean yourTurn = false;
     private boolean circle = true;
     private boolean won = false;
-    public boolean getWon(){ return won; }
+
+    public boolean getWon()
+    {
+        return won;
+    }
+
     private boolean enemyWon = false;
 
-    public boolean getEnemyWon(){ return won; }
+    public boolean getEnemyWon()
+    {
+        return enemyWon;
+    }
+
     private boolean tie = false;
     private static String[] spaces = new String[9];
     public static int firstSpot = -1; //first winning square's coordinate
     public static int secondSpot = -1; //last winning square's coordinate
 
-    private final int[][] _winningLines = new int[][]{ //Those are the win condition's board index numbers
-            {0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
+    private final int[][] _winningLines = new int[][]{{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
 
     public boolean checkCircleState()
     {
@@ -25,13 +33,13 @@ public class Game
         return yourTurn;
     }
 
-    public boolean checkForWin()
+    public boolean checkForWinState()
     {
         for (int i = 0; i < _winningLines.length; i++)
         {
             if (circle)
             {
-                if (spaces[_winningLines[i][0]].equals("O") && spaces[_winningLines[i][1]].equals("O") && spaces[_winningLines[i][2]].equals("O"))
+                if (spaces[_winningLines[i][0]] == "O" && spaces[_winningLines[i][1]] == "O" && spaces[_winningLines[i][2]] == "O")
                 {
                     firstSpot = _winningLines[i][0];
                     secondSpot = _winningLines[i][2];
@@ -39,7 +47,7 @@ public class Game
                 }
             } else
             {
-                if (spaces[_winningLines[i][0]].equals("X") && spaces[_winningLines[i][1]].equals("X") && spaces[_winningLines[i][2]].equals("X"))
+                if (spaces[_winningLines[i][0]] == "X" && spaces[_winningLines[i][1]] == "X" && spaces[_winningLines[i][2]] == "X")
                 {
                     firstSpot = _winningLines[i][0];
                     secondSpot = _winningLines[i][2];
@@ -51,7 +59,7 @@ public class Game
         return won;
     }
 
-    public boolean checkForEnemyWin()
+    public boolean checkForOpponentWinState()
     {
         for (int i = 0; i < _winningLines.length; i++)
         {
@@ -96,7 +104,7 @@ public class Game
 
     public void setCircle(boolean value)
     {
-        circle=value;
+        circle = value;
     }
 
     public static void setSpaceValue(int iValue, String sValue)

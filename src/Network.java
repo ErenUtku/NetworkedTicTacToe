@@ -13,7 +13,7 @@ public class Network
         this._game = game;
     }
 
-    private String _ip = "localHost";
+    private String _ip = "localhost";
     private int _port = 22222;
     private ServerSocket _serverSocket;
     private Socket _socket;
@@ -63,7 +63,7 @@ public class Network
                 }
 
                 _game.checkForTie();
-                _game.checkForEnemyWin();
+                _game.checkForOpponentWinState();
                 _game.setYourTurn(true);
 
             } catch (IOException e)
@@ -120,7 +120,7 @@ public class Network
             accepted = true;
         } catch (IOException e)
         {
-            System.out.printf("Unable to connect to the address: %d / port: %d", _ip, _port);
+            System.out.printf("Unable to connect to the address: %s / port: %d | Instead starting a server", _ip, _port);
             return false;
         }
 

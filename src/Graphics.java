@@ -11,26 +11,34 @@ public class Graphics
         this._game = game;
     }
 
-    private JFrame _frame;
     private BufferedImage _board;
     private BufferedImage _redX;
     private BufferedImage _blueX;
     private BufferedImage _redCircle;
     private BufferedImage _blueCircle;
-    private Painter _painter;
 
     //region board values
 
     private final int _width = 506;
-    public int getWidth(){
+
+    public int getWidth()
+    {
         return _width;
     }
+
     private final int _height = 527;
-    public int getHeight(){
+
+    public int getHeight()
+    {
         return _height;
     }
+
     private final int _lengthSpace = 160;
-    public int getLengthSpace(){return _lengthSpace; }
+
+    public int getLengthSpace()
+    {
+        return _lengthSpace;
+    }
 
     //endregion
 
@@ -41,10 +49,10 @@ public class Graphics
         try
         {
             _blueCircle = ImageIO.read(getClass().getResourceAsStream("blueCircle.png"));
-            _blueX = ImageIO.read(getClass().getResourceAsStream("blueX.png"));
-            _board = ImageIO.read(getClass().getResourceAsStream("board.png"));
-            _redCircle = ImageIO.read(getClass().getResourceAsStream("redCircle.png"));
-            _redX = ImageIO.read(getClass().getResourceAsStream("redX.png"));
+            _blueX = ImageIO.read(getClass().getResourceAsStream("/blueX.png"));
+            _board = ImageIO.read(getClass().getResourceAsStream("/board.png"));
+            _redCircle = ImageIO.read(getClass().getResourceAsStream("/redCircle.png"));
+            _redX = ImageIO.read(getClass().getResourceAsStream("/redX.png"));
         } catch (IOException e)
         {
             e.printStackTrace();
@@ -71,30 +79,34 @@ public class Graphics
             var spaces = _game.getSpace();
             for (int i = 0; i < _game.getSpace().length; i++)
             {
-                int xCalculation = (i % 3) * _lengthSpace + 10 * (i % 3);
-                int yCalculation = (i / 3) * _lengthSpace + 10 * (i / 3);
+                if (spaces[i] != null)
+                {
+                    int xCalculation = (i % 3) * _lengthSpace + 10 * (i % 3);
+                    int yCalculation = (i / 3) * _lengthSpace + 10 * (i / 3);
 
-                if (spaces[i].equals("X"))
-                {
-                    if (_game.checkCircleState())
+                    if (spaces[i].equals("X"))
                     {
-                        g.drawImage(_redX, xCalculation, yCalculation, null);
+                        if (_game.checkCircleState())
+                        {
+                            g.drawImage(_redX, xCalculation, yCalculation, null);
+                        } else
+                        {
+                            g.drawImage(_blueX, xCalculation, yCalculation, null);
+                        }
                     } else
                     {
-                        g.drawImage(_blueX, xCalculation, yCalculation, null);
-                    }
-                } else
-                {
-                    if (!_game.checkCircleState())
-                    {
-                        g.drawImage(_redCircle, xCalculation, yCalculation, null);
-                    } else
-                    {
-                        g.drawImage(_blueCircle, xCalculation, yCalculation, null);
+                        if (!_game.checkCircleState())
+                        {
+                            g.drawImage(_redCircle, xCalculation, yCalculation, null);
+                        } else
+                        {
+                            g.drawImage(_blueCircle, xCalculation, yCalculation, null);
+                        }
                     }
                 }
             }
-            if (_game.checkForWin() || _game.checkForEnemyWin())
+
+            if (_game.getWon() || _game.getEnemyWon())
             {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setStroke(new BasicStroke(10));
@@ -105,11 +117,11 @@ public class Graphics
                 g.setColor(Color.RED);
                 g.setFont(Text.selectedFont(Text.FontType.Large));
 
-                if (_game.checkForWin())
+                if (_game.getWon())
                 {
                     int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Won));
                     g.drawString(Text.selectedLog(Text.LogType.Won), _width / 2 - stringWidth, _height / 2);
-                } else if (_game.checkForEnemyWin())
+                } else if (_game.getEnemyWon())
                 {
                     int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Lost));
                     g.drawString(Text.selectedLog(Text.LogType.Lost), _width / 2 - stringWidth, _height / 2);
@@ -122,7 +134,7 @@ public class Graphics
                 g.setColor(Color.BLACK);
                 g.setFont(Text.selectedFont(Text.FontType.Large));
                 int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Tie));
-                g2.drawString(Text.selectedLog(Text.LogType.Tie),_width/2 - stringWidth /2, _height/2);
+                g2.drawString(Text.selectedLog(Text.LogType.Tie), _width / 2 - stringWidth / 2, _height / 2);
             }
         } else
         {

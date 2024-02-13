@@ -9,7 +9,6 @@ public class TicTacToe implements Runnable
     private Graphics _graphics;
     private Game _game;
     private Painter _painter;
-    private Thread _thread;
 
     public TicTacToe()
     {
@@ -21,14 +20,16 @@ public class TicTacToe implements Runnable
         ///summary
         ///Set ip&port via  Network
         ///Set graphics via Graphic
+
         _network.setIPAndPort(_scanner);
+
         _graphics.loadImages();
 
         _painter = new Painter(_graphics,_network, _game);
 
         _painter.setPreferredSize(new Dimension(_graphics.getWidth(), _graphics.getHeight()));
 
-        if (_network.connect())
+        if (!_network.connect())
         {
             _network.initializeServer(_game);
         }

@@ -51,7 +51,8 @@ public class Painter extends JPanel implements MouseListener
                     if (!_game.checkCircleState())
                     {
                         Game.setSpaceValue(position, "X");
-                    } else Game.getSpace()[position] = "O";
+                    }
+                    else Game.getSpace()[position] = "O";
 
                     _game.setYourTurn(false);
                     repaint();
@@ -69,7 +70,7 @@ public class Painter extends JPanel implements MouseListener
 
                     System.out.println("DATA WAS SENT");
 
-                    _game.checkForWin();
+                    _game.checkForWinState();
                     _game.checkForTie();
 
                 }
