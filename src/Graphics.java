@@ -70,7 +70,7 @@ public class Graphics
             java.awt.Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.UnableToCommunicate));
-            g.drawString(Text.selectedLog(Text.LogType.UnableToCommunicate), _width / 2 - stringWidth, _height / 2);
+            g.drawString(Text.selectedLog(Text.LogType.UnableToCommunicate), (_width / 2) - (stringWidth/2), _height / 2);
             return;
         }
 
@@ -120,11 +120,11 @@ public class Graphics
                 if (_game.getWon())
                 {
                     int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Won));
-                    g.drawString(Text.selectedLog(Text.LogType.Won), _width / 2 - stringWidth, _height / 2);
+                    g.drawString(Text.selectedLog(Text.LogType.Won), (_width / 2) - (stringWidth/2), _height / 2);
                 } else if (_game.getEnemyWon())
                 {
                     int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Lost));
-                    g.drawString(Text.selectedLog(Text.LogType.Lost), _width / 2 - stringWidth, _height / 2);
+                    g.drawString(Text.selectedLog(Text.LogType.Lost), (_width / 2) - (stringWidth/2), _height / 2);
                 }
             }
 
@@ -134,7 +134,7 @@ public class Graphics
                 g.setColor(Color.BLACK);
                 g.setFont(Text.selectedFont(Text.FontType.Large));
                 int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Tie));
-                g2.drawString(Text.selectedLog(Text.LogType.Tie), _width / 2 - stringWidth / 2, _height / 2);
+                g2.drawString(Text.selectedLog(Text.LogType.Tie), (_width / 2) - (stringWidth / 2), _height / 2);
             }
         } else
         {
@@ -143,7 +143,7 @@ public class Graphics
             Graphics2D g2 = (Graphics2D) g;
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Waiting));
-            g.drawString(Text.selectedLog(Text.LogType.Waiting), _width / 2 - stringWidth, _height / 2);
+            g.drawString(Text.selectedLog(Text.LogType.Waiting), (_width / 2) - (stringWidth/2), _height / 2);
         }
 
     }
