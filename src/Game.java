@@ -65,7 +65,7 @@ public class Game
         {
             if (circle)
             {
-                if (spaces[_winningLines[i][0]].equals("X") && spaces[_winningLines[i][1]].equals("X") && spaces[_winningLines[i][2]].equals("X"))
+                if (spaces[_winningLines[i][0]] == "X" && spaces[_winningLines[i][1]] == "X" && spaces[_winningLines[i][2]] == "X")
                 {
                     firstSpot = _winningLines[i][0];
                     secondSpot = _winningLines[i][2];
@@ -73,7 +73,7 @@ public class Game
                 }
             } else
             {
-                if (spaces[_winningLines[i][0]].equals("O") && spaces[_winningLines[i][1]].equals("O") && spaces[_winningLines[i][2]].equals("O"))
+                if (spaces[_winningLines[i][0]] == "O" && spaces[_winningLines[i][1]] == "O"&& spaces[_winningLines[i][2]] == "O")
                 {
                     firstSpot = _winningLines[i][0];
                     secondSpot = _winningLines[i][2];

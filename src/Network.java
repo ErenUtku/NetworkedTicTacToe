@@ -48,7 +48,7 @@ public class Network
         //tick is 10
         if (errors >= 10) unableToCommunicateWithOpponents = true;
 
-        if (!_game.checkTurnState() && unableToCommunicateWithOpponents)
+        if (!_game.checkTurnState() && !unableToCommunicateWithOpponents)
         {
             try
             {
