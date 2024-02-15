@@ -25,6 +25,8 @@ public class Painter extends JPanel implements MouseListener
         this._network = network;
 
         this._game = game;
+
+        this.setPreferredSize(new Dimension(_graphics.getWidth(), _graphics.getHeight()));
     }
 
     @Override
@@ -48,11 +50,11 @@ public class Painter extends JPanel implements MouseListener
 
                 if (Game.getSpace()[position] == null)
                 {
-                    if (!_game.checkCircleState())
+                    if (_game.checkFirstPlayer())
                     {
-                        Game.setSpaceValue(position, "X");
+                        Game.setSpaceValue(position, "O");
                     }
-                    else Game.getSpace()[position] = "O";
+                    else Game.setSpaceValue(position, "X");
 
                     _game.setYourTurn(false);
                     repaint();
@@ -70,9 +72,7 @@ public class Painter extends JPanel implements MouseListener
 
                     System.out.println("DATA WAS SENT");
 
-                    _game.checkForWinState();
-                    _game.checkForTie();
-
+                    _game.checkWinState(Game.UserType.Player);
                 }
             }
         }

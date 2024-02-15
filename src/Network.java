@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 public class Network
 {
+    private Game _game;
+
     public Network(Game game)
     {
         this._game = game;
@@ -18,35 +20,48 @@ public class Network
     private ServerSocket _serverSocket;
     private Socket _socket;
     private DataOutputStream _dos;
-    public DataOutputStream getDos(){return _dos;}
     private DataInputStream _dis;
-    public DataInputStream getDis(){return _dis;}
-    public static boolean unableToCommunicateWithOpponents = false;
     private int errors = 0;
-    private static boolean accepted = false;
 
-    private Game _game;
+    //region Static Values
+    public static boolean unableToCommunicateWithOpponents = false;
+    private static boolean accepted = false;
+    //endregion
+
+    //region Capsulation
+    public DataOutputStream getDos()
+    {
+        return _dos;
+    }
+    //endregion
 
     public static boolean isAccepted()
     {
         return accepted;
     }
 
-    public void initializeServer(Game game) {
-        try {
+    public void initializeServer(Game game)
+    {
+        try
+        {
             _serverSocket = new ServerSocket(_port, 8, InetAddress.getByName(_ip));
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
 
         game.setYourTurn(true);
-        game.setCircle(false);
+        game.setFirstPlayer(false);
     }
 
-    public void tick()
+    public void update()
     {
-        //tick is 10
-        if (errors >= 10) unableToCommunicateWithOpponents = true;
+        //Update tick is 10,
+        if (errors >= 10)
+        {
+            //if the error count surpasses a value of 10, stop the game
+            unableToCommunicateWithOpponents = true;
+        }
 
         if (!_game.checkTurnState() && !unableToCommunicateWithOpponents)
         {
@@ -54,7 +69,7 @@ public class Network
             {
                 int space = _dis.readInt();
 
-                if (_game.checkCircleState())
+                if (_game.checkFirstPlayer())
                 {
                     _game.setSpaceValue(space, "X");
                 } else
@@ -63,7 +78,7 @@ public class Network
                 }
 
                 _game.checkForTie();
-                _game.checkForOpponentWinState();
+                _game.checkWinState(Game.UserType.Opponent);
                 _game.setYourTurn(true);
 
             } catch (IOException e)
@@ -74,7 +89,8 @@ public class Network
         }
     }
 
-    public void sentError(){
+    public void sentError()
+    {
         errors++;
     }
 
@@ -93,7 +109,7 @@ public class Network
         }
     }
 
-    public void listenForServerRequest()
+    public void listenServerRequest()
     {
         Socket socket;
         try
@@ -102,7 +118,8 @@ public class Network
             _dos = new DataOutputStream(socket.getOutputStream());
             _dis = new DataInputStream(socket.getInputStream());
             accepted = true;
-            System.out.println("CLIENT HAS REQUESTED TO JOIN, AND WE HAVE ACCEPTED");
+
+            System.out.println("Client request to join, and it is accepted!");
 
         } catch (IOException e)
         {
@@ -114,7 +131,7 @@ public class Network
     {
         try
         {
-            _socket = new Socket(_ip,_port);
+            _socket = new Socket(_ip, _port);
             _dos = new DataOutputStream(_socket.getOutputStream());
             _dis = new DataInputStream(_socket.getInputStream());
             accepted = true;
@@ -124,7 +141,7 @@ public class Network
             return false;
         }
 
-        System.out.println("Successfully connected to server");
+        System.out.printf("Successfully connected to server : %s / port: %d | Joining the server", _ip, _port);
         return true;
     }
 }

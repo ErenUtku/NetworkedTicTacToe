@@ -1,5 +1,4 @@
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -9,6 +8,9 @@ public class Graphics
     public Graphics(Game game)
     {
         this._game = game;
+
+        //Load Images as BufferedImage
+        loadImages();
     }
 
     private BufferedImage _board;
@@ -44,7 +46,7 @@ public class Graphics
 
     private Game _game;
 
-    public void loadImages()
+    private void loadImages()
     {
         try
         {
@@ -65,12 +67,7 @@ public class Graphics
 
         if (Network.unableToCommunicateWithOpponents)
         {
-            g.setColor(Color.RED);
-            g.setFont(Text.selectedFont(Text.FontType.Small));
-            java.awt.Graphics2D g2 = (Graphics2D) g;
-            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.UnableToCommunicate));
-            g.drawString(Text.selectedLog(Text.LogType.UnableToCommunicate), (_width / 2) - (stringWidth/2), _height / 2);
+            DrawTextOnScreen(g, Color.RED, Text.FontType.Small, Text.LogType.UnableToCommunicate);
             return;
         }
 
@@ -86,7 +83,7 @@ public class Graphics
 
                     if (spaces[i].equals("X"))
                     {
-                        if (_game.checkCircleState())
+                        if (_game.checkFirstPlayer())
                         {
                             g.drawImage(_redX, xCalculation, yCalculation, null);
                         } else
@@ -95,7 +92,7 @@ public class Graphics
                         }
                     } else
                     {
-                        if (!_game.checkCircleState())
+                        if (!_game.checkFirstPlayer())
                         {
                             g.drawImage(_redCircle, xCalculation, yCalculation, null);
                         } else
@@ -108,46 +105,61 @@ public class Graphics
 
             if (_game.getWon() || _game.getEnemyWon())
             {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setStroke(new BasicStroke(10));
-                g2.setColor(Color.BLACK);
-
-                g.drawLine(Game.firstSpot % 3 * _lengthSpace + 10 * Game.firstSpot % 3 + _lengthSpace / 2, (Game.firstSpot / 3) * _lengthSpace + 10 * (Game.firstSpot / 3) + _lengthSpace / 2, Game.secondSpot % 3 * _lengthSpace + 10 * Game.secondSpot % 3 + _lengthSpace / 2, Game.secondSpot / 3 * _lengthSpace + 10 * (int) (Game.secondSpot / 3) + _lengthSpace / 2);
-
-                g.setColor(Color.RED);
-                g.setFont(Text.selectedFont(Text.FontType.Large));
 
                 if (_game.getWon())
                 {
-                    int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Won));
-                    g.drawString(Text.selectedLog(Text.LogType.Won), (_width / 2) - (stringWidth/2), _height / 2);
+                    //Game is Won=>
+                    DrawTextOnScreen(g, Color.BLACK, Text.FontType.Large, Text.LogType.Won);
+
+                    //Draw Stroke
+                    DrawWinStroke(g, 10, Color.BLACK);
                 } else if (_game.getEnemyWon())
                 {
-                    int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Lost));
-                    g.drawString(Text.selectedLog(Text.LogType.Lost), (_width / 2) - (stringWidth/2), _height / 2);
+                    //Game is Lost=>
+                    DrawTextOnScreen(g, Color.RED, Text.FontType.Large, Text.LogType.Lost);
+
+                    //Draw Stroke
+                    DrawWinStroke(g, 10, Color.RED);
                 }
             }
 
             if (_game.checkForTie())
             {
-                Graphics2D g2 = (Graphics2D) g;
-                g.setColor(Color.BLACK);
-                g.setFont(Text.selectedFont(Text.FontType.Large));
-                int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Tie));
-                g2.drawString(Text.selectedLog(Text.LogType.Tie), (_width / 2) - (stringWidth / 2), _height / 2);
+                //Game is Tie =>
+                DrawTextOnScreen(g, Color.BLACK, Text.FontType.Large, Text.LogType.Tie);
             }
         } else
         {
-            g.setColor(Color.RED);
-            g.setFont(Text.selectedFont(Text.FontType.Normal));
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(Text.LogType.Waiting));
-            g.drawString(Text.selectedLog(Text.LogType.Waiting), (_width / 2) - (stringWidth/2), _height / 2);
+            //Waiting For Opponents..
+            DrawTextOnScreen(g, Color.RED, Text.FontType.Normal, Text.LogType.Waiting);
         }
 
     }
 
+    public void DrawTextOnScreen(java.awt.Graphics g, Color color, Text.FontType fontType, Text.LogType logType)
+    {
+        g.setColor(color);
+        g.setFont(Text.selectedFont(fontType));
+
+        java.awt.Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        int stringWidth = g2.getFontMetrics().stringWidth(Text.selectedLog(logType));
+        g.drawString(Text.selectedLog(logType), (_width / 2) - (stringWidth / 2), _height / 2);
+    }
+
+    public void DrawWinStroke(java.awt.Graphics g, float strokeThickness, Color strokeColor)
+    {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(strokeThickness));
+        g2.setColor(strokeColor);
+
+        g.drawLine(
+                //Start Point's x and y calculation
+                Game.firstSpot % 3 * _lengthSpace + 10 * Game.firstSpot % 3 + _lengthSpace / 2, (Game.firstSpot / 3) * _lengthSpace + 10 * (Game.firstSpot / 3) + _lengthSpace / 2,
+                //Finish Point's x and y calculation
+                Game.secondSpot % 3 * _lengthSpace + 10 * Game.secondSpot % 3 + _lengthSpace / 2, Game.secondSpot / 3 * _lengthSpace + 10 * (int) (Game.secondSpot / 3) + _lengthSpace / 2);
+    }
 
 }
 

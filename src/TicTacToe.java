@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.util.Scanner;
 
 public class TicTacToe implements Runnable
@@ -16,25 +15,20 @@ public class TicTacToe implements Runnable
         _game = new Game();
         _graphics = new Graphics(_game);
         _network = new Network(_game);
-
-        ///summary
-        ///Set ip&port via  Network
-        ///Set graphics via Graphic
-
-        _network.setIPAndPort(_scanner);
-
-        _graphics.loadImages();
-
         _painter = new Painter(_graphics,_network, _game);
 
-        _painter.setPreferredSize(new Dimension(_graphics.getWidth(), _graphics.getHeight()));
+        ///summary
+        ///Set ip and port via Network by using Scanner.
+
+        _network.setIPAndPort(_scanner);
 
         if (!_network.connect())
         {
             _network.initializeServer(_game);
         }
 
-        //Initialize Frame and Thread
+        //Initialize=>
+        // Frame and Thread
 
         InitializeFrame();
         InitializeThread();
@@ -45,12 +39,12 @@ public class TicTacToe implements Runnable
     {
         while (true)
         {
-            _network.tick();
+            _network.update();
             _painter.repaint();
 
-            if (!_game.checkCircleState() && !_network.isAccepted())
+            if (!_game.checkFirstPlayer() && !_network.isAccepted())
             {
-                _network.listenForServerRequest();
+                _network.listenServerRequest();
             }
         }
 

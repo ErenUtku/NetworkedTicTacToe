@@ -1,31 +1,38 @@
 public class Game
 {
     private boolean yourTurn = false;
-    private boolean circle = true;
+    private boolean isFirstPlayer = true;
     private boolean won = false;
+    private boolean enemyWon = false;
+
+    //region Constants
+
+    private final int[][] _winningLines = new int[][]{{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
+
+    //endregion
+
+    //region Static Fields
+    private static String[] spaces = new String[9];
+    public static int firstSpot = -1; //first winning square's coordinate
+    public static int secondSpot = -1; //last winning square's coordinate
+
+    //endregion
+
+    //region Capsulation
 
     public boolean getWon()
     {
         return won;
     }
 
-    private boolean enemyWon = false;
-
     public boolean getEnemyWon()
     {
         return enemyWon;
     }
 
-    private boolean tie = false;
-    private static String[] spaces = new String[9];
-    public static int firstSpot = -1; //first winning square's coordinate
-    public static int secondSpot = -1; //last winning square's coordinate
-
-    private final int[][] _winningLines = new int[][]{{0, 1, 2}, {3, 4, 5}, {6, 7, 8}, {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, {0, 4, 8}, {2, 4, 6}};
-
-    public boolean checkCircleState()
+    public boolean checkFirstPlayer()
     {
-        return circle;
+        return isFirstPlayer;
     }
 
     public boolean checkTurnState()
@@ -33,56 +40,54 @@ public class Game
         return yourTurn;
     }
 
-    public boolean checkForWinState()
+    public static String[] getSpace()
     {
-        for (int i = 0; i < _winningLines.length; i++)
-        {
-            if (circle)
-            {
-                if (spaces[_winningLines[i][0]] == "O" && spaces[_winningLines[i][1]] == "O" && spaces[_winningLines[i][2]] == "O")
-                {
-                    firstSpot = _winningLines[i][0];
-                    secondSpot = _winningLines[i][2];
-                    won = true;
-                }
-            } else
-            {
-                if (spaces[_winningLines[i][0]] == "X" && spaces[_winningLines[i][1]] == "X" && spaces[_winningLines[i][2]] == "X")
-                {
-                    firstSpot = _winningLines[i][0];
-                    secondSpot = _winningLines[i][2];
-                    won = true;
-                }
-
-            }
-        }
-        return won;
+        return spaces;
     }
 
-    public boolean checkForOpponentWinState()
+    //endregion
+
+    //region Setters
+
+    public void setYourTurn(boolean value)
+    {
+        yourTurn = value;
+    }
+
+    public void setFirstPlayer(boolean value)
+    {
+        isFirstPlayer = value;
+    }
+
+    public static void setSpaceValue(int iValue, String sValue)
+    {
+        spaces[iValue] = sValue;
+    }
+
+    //endregion
+
+    public boolean checkWinState(UserType userType)
     {
         for (int i = 0; i < _winningLines.length; i++)
         {
-            if (circle)
+            if (spaces[_winningLines[i][0]] != null && spaces[_winningLines[i][1]] != null && spaces[_winningLines[i][2]] != null)
             {
-                if (spaces[_winningLines[i][0]] == "X" && spaces[_winningLines[i][1]] == "X" && spaces[_winningLines[i][2]] == "X")
+                if (spaces[_winningLines[i][0]].equals(spaces[_winningLines[i][1]]) && spaces[_winningLines[i][1]].equals(spaces[_winningLines[i][2]]))
                 {
                     firstSpot = _winningLines[i][0];
                     secondSpot = _winningLines[i][2];
-                    enemyWon = true;
-                }
-            } else
-            {
-                if (spaces[_winningLines[i][0]] == "O" && spaces[_winningLines[i][1]] == "O"&& spaces[_winningLines[i][2]] == "O")
-                {
-                    firstSpot = _winningLines[i][0];
-                    secondSpot = _winningLines[i][2];
-                    enemyWon = true;
-                }
 
+                    if (userType == UserType.Player)
+                    {
+                        won = true;
+                    } else
+                    {
+                        enemyWon = true;
+                    }
+                }
             }
         }
-        return enemyWon;
+        return userType == UserType.Player ? won : enemyWon;
     }
 
     public boolean checkForTie()
@@ -91,34 +96,17 @@ public class Game
         {
             if (spaces[i] == null)
             {
-                return tie = false;
+                return false;
             }
         }
-        return tie = true;
+        return true;
     }
 
-    public void setYourTurn(boolean value)
+    public enum UserType
     {
-        yourTurn = value;
+        Player,
+        Opponent
     }
 
-    public void setCircle(boolean value)
-    {
-        circle = value;
-    }
-
-    public static void setSpaceValue(int iValue, String sValue)
-    {
-        spaces[iValue] = sValue;
-    }
-
-    public static String[] getSpace()
-    {
-        return spaces;
-    }
-
-    public int[][] getWinningLines()
-    {
-        return _winningLines;
-    }
 }
+
